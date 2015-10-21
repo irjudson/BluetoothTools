@@ -7,6 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     x:Name="BLEPairApp">
+    <Page.DataContext>
+        <local:BleViewModel />
+    </Page.DataContext>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid x:Name="RootGrid" Margin="12,20,12,12">
@@ -31,10 +34,10 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        
-                        <Button x:Name="RunButton" Grid.Row="0" Grid.Column="0" Content="Run" Margin="5,10,10,0" Click="RunButton_Click"/>
-                        <Button x:Name="StopButton" Grid.Row="0" Content="Stop" Margin="73,10,0,0" Click="StopButton_Click" IsEnabled="False"/>
-                        <Button x:Name="PairButton" Grid.Row="0" Grid.Column="1" Content="Pair" Margin="113,10,0,0" Click="PairButton_Click" IsEnabled="False"/>
+
+                        <Button x:Name="RunButton" Grid.Row="0" Grid.Column="0" Content="Run" Margin="5,10,10,0" Command="{Binding RunCommand}"/>
+                        <Button x:Name="StopButton" Grid.Row="0" Content="Stop" Margin="73,10,0,0" Command="{Binding StopCommand}" />
+                        <Button x:Name="PairButton" Grid.Row="0" Grid.Column="1" Content="Pair" Margin="113,10,0,0" />
 
                         <ListBox
                             x:Name="ReceivedAdvertisementListBox"
@@ -46,7 +49,18 @@
                             Margin="0,10,0,0"
                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
                             ScrollViewer.HorizontalScrollMode="Auto"
-                            />
+                            ItemsSource="{Binding Advertisements.View}"
+                           >
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding manufacturer}" />
+                                        <TextBlock Text="{Binding address}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
                     </Grid>
                 </StackPanel>
             </ScrollViewer>
