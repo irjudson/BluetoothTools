@@ -1,0 +1,2 @@
+cd /d "C:\Users\ivanjud\Documents\Visual Studio 2015\Projects\BluetoothLEPair\BluetoothLEPair" &msbuild "BluetoothLEPair.csproj" /t:sdvViewer /p:configuration="Debug" /p:platform=x64
+exit %errorlevel% 
