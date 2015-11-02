@@ -54,8 +54,9 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding manufacturer}" />
-                                        <TextBlock Text="{Binding address}" />
+                                        <!--<TextBlock Text="{Binding manufacturer}" />-->
+                                        <TextBlock Text="{Binding name}" />
+                                        <!--<TextBlock Text="{Binding type}" />-->
                                     </StackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>

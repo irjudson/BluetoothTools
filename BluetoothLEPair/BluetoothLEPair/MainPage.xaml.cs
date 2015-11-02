@@ -21,6 +21,8 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Windows.UI.Core;
 using System.Collections.Concurrent;
+using System.Text.RegularExpressions;
+using Windows.Devices.Bluetooth;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -34,11 +36,13 @@ namespace BluetoothLEPair
 
     public class AdvertisedBLEDevice
     {
+
         public AdvertisedBLEDevice(BluetoothLEAdvertisementReceivedEventArgs inAd)
         {
             ad = inAd;
         }
         public BluetoothLEAdvertisementReceivedEventArgs ad { get; set; }
+        public BluetoothLEDevice device { get; set; }
         public string manufacturer
         {
             get
@@ -68,7 +72,20 @@ namespace BluetoothLEPair
         {
             get
             {
-                return Guid.NewGuid().ToString();
+                var address = ad.BluetoothAddress.ToString("X");
+                return Regex.Replace(address, "(.{2})(.{2})(.{2})(.{2})(.{2})(.{2})", "$1:$2:$3:$4:$5:$6");
+            }
+        }
+
+        public string type {
+            get {
+                return ad.AdvertisementType.ToString();
+            }
+        }
+
+        public string name {
+            get {
+                return ad.Advertisement.LocalName;
             }
         }
     }
@@ -233,6 +250,9 @@ namespace BluetoothLEPair
 
             _table.TryGetValue(newDevice.address, out oldDevice);
             _table[newDevice.address] = newDevice;
+
+            var addr = eventArgs.BluetoothAddress;
+            BluetoothLEDevice d = await BluetoothLEDevice.FromBluetoothAddressAsync(addr);
 
             // Notify the user that the watcher was stopped
             await _dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
